@@ -1,3 +1,15 @@
 #!/usr/bin/env ruby
 
 require 'jasmine/flatiron'
+
+phantom = PhantomChecker.installed?
+if phantom
+end
+# Require javascript somehow
+# Make the TestRunner.html file
+# call that crazy command: phantomjs run-jasmine.js <TestRunner.html>
+# flag for turning off color
+# flag for not pushing results
+# flag for running in browser
+
+# JSON.parse(Crack::XML.parse(File.read('TEST-Player.xml')).to_json)
