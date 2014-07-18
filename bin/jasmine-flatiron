@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+SERVICE_URL = 'http://something.flatironschool.com'
+SERVICE_ENDPOINT = '/where_the_results_go'
+
 require 'jasmine/flatiron'
 require 'optparse'
 require 'fileutils'
@@ -25,7 +28,8 @@ if ARGV.any? { |arg| arg == "init" }
   Jasmine::Flatiron::Initializer.run
 end
 
-# phantom = Jasmine::Flatiron::PhantomChecker.installed?
+Jasmine::Flatiron::PhantomChecker.check_installation
+Jasmine::Flatiron::Runner.run(options)
 
 # flag for turning off color
 # flag for not pushing results

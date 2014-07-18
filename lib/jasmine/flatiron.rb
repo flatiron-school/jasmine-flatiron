@@ -3,11 +3,11 @@ require "jasmine/flatiron/version"
 module Jasmine
   module Flatiron
     class PhantomChecker
-      def self.installed?
-        new.installed?
+      def self.check_installation
+        new.check_installation
       end
 
-      def installed?
+      def check_installation
         if !brew_installed?
           puts "You must have Homebrew installed."
           exit
@@ -42,7 +42,7 @@ module Jasmine
       end
 
       def make_spec_directory
-        FileUtils.mkdir('spec')
+        FileUtils.mkdir_p('spec')
         FileUtils.touch('spec/.keep')
       end
 
@@ -60,7 +60,6 @@ module Jasmine
       end
 
       def location_to_dir(dir_name)
-        puts __FILE__
         File.join(File.dirname(File.expand_path(__FILE__)), "#{dir_name}")
       end
 
@@ -70,6 +69,46 @@ module Jasmine
 
       def location_to_file(file_name)
         File.join(File.dirname(File.expand_path(__FILE__)))
+      end
+    end
+
+    class Runner
+      attr_reader :no_color, :local, :browser, :conn
+
+      def self.run(options)
+        new(options).run
+      end
+
+      def initialize(options)
+        @no_color = !!options[:color]
+        @local = !!options[:local]
+        @browser = !!options[:browser]
+        @conn = Faraday.new(url: SERVICE_URL) do |faraday|
+          faraday.request  :url_encoded
+          faraday.adapter  Faraday.default_adapter
+        end
+      end
+
+      def run
+        if browser
+          `open #{FileFinder.location_to_dir('runners')}/SpecRunner.html`
+        else
+          color_opt = no_color ? "" : "NoColor"
+          `phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
+        end
+
+        unless local
+          push_to_flatiron
+        end
+
+        clean_up
+      end
+
+      def push_to_flatiron
+        conn.post(SERVICE_ENDPOINT, )
+      end
+
+      def clean_up
       end
     end
   end
