@@ -1,15 +1,40 @@
 #!/usr/bin/env ruby
 
 require 'jasmine/flatiron'
+require 'optparse'
+require 'fileutils'
 
-phantom = PhantomChecker.installed?
-if phantom
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: jasmine-flatiron [options]"
+
+  opts.on("-n", "--[no-]color", "Turn off color output") do |c|
+    options[:color] = c
+  end
+
+  opts.on("-l", "--local", "Don't push results to Flatiron LMS") do |l|
+    options[:local] = l
+  end
+
+  opts.on("-b", "--browser", "Run tests in browser") do |b|
+    options[:browser] = b
+  end
+end.parse!
+
+if ARGV.any? { |arg| arg == "init" }
+  Jasmine::Flatiron::Initializer.run
 end
-# Require javascript somehow
-# Make the TestRunner.html file
-# call that crazy command: phantomjs run-jasmine.js <TestRunner.html>
+
+# phantom = Jasmine::Flatiron::PhantomChecker.installed?
+
 # flag for turning off color
 # flag for not pushing results
 # flag for running in browser
+# init
+# open
+# Require javascript somehow
+# Make the TestRunner.html file
+# call that crazy command: phantomjs run-jasmine.js <TestRunner.html>
 
+# phantomjs runners/run-jasmine.js runners/SpecRunner.html
 # JSON.parse(Crack::XML.parse(File.read('TEST-Player.xml')).to_json)

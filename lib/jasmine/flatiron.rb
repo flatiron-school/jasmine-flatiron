@@ -30,5 +30,47 @@ module Jasmine
         `brew install phantomjs`
       end
     end
+
+    class Initializer
+      def self.run
+        new.run
+      end
+
+      def run
+        make_spec_directory
+        generate_app_js
+      end
+
+      def make_spec_directory
+        FileUtils.mkdir('spec')
+        FileUtils.touch('spec/.keep')
+      end
+
+      def generate_app_js
+        FileUtils.cp(
+          "#{FileFinder.location_to_dir('templates')}/app.js.example",
+          'app.js'
+        )
+      end
+    end
+
+    class FileFinder
+      def self.location_to_dir(dir_name)
+        new.location_to_dir(dir_name)
+      end
+
+      def location_to_dir(dir_name)
+        puts __FILE__
+        File.join(File.dirname(File.expand_path(__FILE__)), "#{dir_name}")
+      end
+
+      def self.location_to_file(file_name)
+        new.location_to_file(file_name)
+      end
+
+      def location_to_file(file_name)
+        File.join(File.dirname(File.expand_path(__FILE__)))
+      end
+    end
   end
 end
