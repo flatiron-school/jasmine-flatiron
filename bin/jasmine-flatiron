@@ -7,8 +7,8 @@ require 'jasmine/flatiron'
 require 'optparse'
 require 'fileutils'
 require 'erb'
-require 'pry'
 require 'faraday'
+require 'yaml'
 
 options = {}
 OptionParser.new do |opts|
