@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-SERVICE_URL = 'http://something.flatironschool.com'
-SERVICE_ENDPOINT = '/where_the_results_go'
+SERVICE_URL = 'http://requestb.in'
+SERVICE_ENDPOINT = '/14pe2gq1'
 
 require 'jasmine/flatiron'
 require 'optparse'
