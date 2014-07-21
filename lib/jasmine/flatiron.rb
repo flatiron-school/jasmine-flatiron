@@ -93,18 +93,18 @@ module Jasmine
       def run
         make_runner_html
 
-        # if browser
-        #   `open #{FileFinder.location_to_dir('runners')}/SpecRunner.html`
-        # else
-        #   color_opt = no_color ? "" : "NoColor"
-        #   `phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
-        # end
+        if browser
+          `open #{FileFinder.location_to_dir('runners')}/SpecRunner.html`
+        else
+          color_opt = no_color ? "" : "NoColor"
+          `phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
+        end
 
         # unless local
         #   push_to_flatiron
         # end
 
-        # clean_up
+        clean_up
       end
 
       def push_to_flatiron
@@ -116,14 +116,13 @@ module Jasmine
 
         @app_js_path = "#{FileUtils.pwd}/app.js"
 
-        result = template.result(binding)
         File.open("#{FileFinder.location_to_dir('runners')}/SpecRunnerTemplate#{color_opt}.html", 'w+') do |f|
-          f << result
+          f << template.result(binding)
         end
-        binding.pry
       end
 
       def clean_up
+        FileUtils.rm("#{FileFinder.location_to_dir('runners')}/SpecRunnerTemplate#{color_opt}.html")
       end
     end
   end
