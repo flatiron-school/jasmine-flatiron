@@ -103,7 +103,7 @@ module Jasmine
         #   push_to_flatiron
         # end
 
-        clean_up
+        # clean_up
       end
 
       def push_to_flatiron
