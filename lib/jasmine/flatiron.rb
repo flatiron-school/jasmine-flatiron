@@ -144,6 +144,8 @@ module Jasmine
         end
 
         if !local && !browser
+          json_results.delete(:username)
+          json_results.delete(:repo)
           push_to_flatiron
         end
 
