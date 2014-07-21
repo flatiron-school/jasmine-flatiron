@@ -43,6 +43,3 @@ else
   repo = Jasmine::Flatiron::RepoParser.get_repo
   Jasmine::Flatiron::Runner.run(username, repo, options)
 end
-
-# phantomjs runners/run-jasmine.js runners/SpecRunner.html
-# JSON.parse(Crack::XML.parse(File.read('TEST-Player.xml')).to_json)
