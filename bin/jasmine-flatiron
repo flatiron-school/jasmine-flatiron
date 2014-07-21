@@ -33,8 +33,8 @@ if ARGV.any? { |arg| arg == "init" }
   Jasmine::Flatiron::Initializer.run
 else
   Jasmine::Flatiron::PhantomChecker.check_installation
-  username = RSpec::Flatiron::UsernameParser.get_username
-  repo = RSpec::Flatiron::RepoParser.get_repo
+  username = Jasmine::Flatiron::UsernameParser.get_username
+  repo = Jasmine::Flatiron::RepoParser.get_repo
   Jasmine::Flatiron::Runner.run(username, repo, options)
 end
 
