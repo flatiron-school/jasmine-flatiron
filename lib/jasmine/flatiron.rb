@@ -94,7 +94,7 @@ module Jasmine
         make_runner_html
 
         if browser
-          `open #{FileFinder.location_to_dir('runners')}/SpecRunner.html`
+          `open #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
         else
           color_opt = no_color ? "" : "NoColor"
           `phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
@@ -104,7 +104,7 @@ module Jasmine
         #   push_to_flatiron
         # end
 
-        clean_up
+        # clean_up
       end
 
       def push_to_flatiron
