@@ -6,6 +6,8 @@ SERVICE_ENDPOINT = '/where_the_results_go'
 require 'jasmine/flatiron'
 require 'optparse'
 require 'fileutils'
+require 'erb'
+require 'pry'
 
 options = {}
 OptionParser.new do |opts|

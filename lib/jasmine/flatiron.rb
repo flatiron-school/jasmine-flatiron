@@ -90,22 +90,35 @@ module Jasmine
       end
 
       def run
-        if browser
-          `open #{FileFinder.location_to_dir('runners')}/SpecRunner.html`
-        else
-          color_opt = no_color ? "" : "NoColor"
-          `phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
-        end
+        make_runner_html
 
-        unless local
-          push_to_flatiron
-        end
+        # if browser
+        #   `open #{FileFinder.location_to_dir('runners')}/SpecRunner.html`
+        # else
+        #   color_opt = no_color ? "" : "NoColor"
+        #   `phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
+        # end
 
-        clean_up
+        # unless local
+        #   push_to_flatiron
+        # end
+
+        # clean_up
       end
 
       def push_to_flatiron
         conn.post(SERVICE_ENDPOINT, )
+      end
+
+      def make_runner_html
+        binding.pry
+        template = Erb.new(File.read("#{FileFinder.location_to_dir('templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
+
+        @app_js_path = "#{FileUtils.pwd}/app.js"
+
+        File.open("#{FileFinder.location_to_dir('runners')}/SpecRunnerTemplate#{color_opt}.html", 'w+') do |f|
+          f.write(template.result)
+        end
       end
 
       def clean_up
