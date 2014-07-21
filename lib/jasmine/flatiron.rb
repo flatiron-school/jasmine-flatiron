@@ -73,7 +73,7 @@ module Jasmine
     end
 
     class Runner
-      attr_reader :no_color, :local, :browser, :conn
+      attr_reader :no_color, :local, :browser, :conn, :color_opt
 
       def self.run(options)
         new(options).run
@@ -81,6 +81,7 @@ module Jasmine
 
       def initialize(options)
         @no_color = !!options[:color]
+        @color_opt = no_color ? "" : "NoColor"
         @local = !!options[:local]
         @browser = !!options[:browser]
         @conn = Faraday.new(url: SERVICE_URL) do |faraday|
