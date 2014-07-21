@@ -29,6 +29,10 @@ OptionParser.new do |opts|
   opts.on("-b", "--browser", "Run tests in browser") do |b|
     options[:browser] = b
   end
+
+  opts.on("-o", "--out FILE") do |o|
+    options[:out] = o
+  end
 end.parse!
 
 if ARGV.any? { |arg| arg == "init" }

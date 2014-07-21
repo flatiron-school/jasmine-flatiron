@@ -106,7 +106,7 @@ module Jasmine
     end
 
     class Runner
-      attr_reader :no_color, :local, :browser, :conn, :color_opt
+      attr_reader :no_color, :local, :browser, :conn, :color_opt, :out
       attr_accessor :json_results
 
       def self.run(username, repo, options)
@@ -118,6 +118,7 @@ module Jasmine
         @color_opt = !no_color ? "" : "NoColor"
         @local = !!options[:local]
         @browser = !!options[:browser]
+        @out = options[:out]
         @json_results = {
           username: username,
           repo: repo,
@@ -159,6 +160,16 @@ module Jasmine
           json_results[:errors] += parsed["errors"].to_i
           json_results[:failures] += parsed["failures"].to_i
           json_results[:time] += parsed["time"].to_f
+        end
+
+        if out
+          write_json_output
+        end
+      end
+
+      def write_json_output
+        File.open(out, 'w+') do |f|
+          f.write(json_results)
         end
       end
 
