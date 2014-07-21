@@ -96,7 +96,6 @@ module Jasmine
         if browser
           `open #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
         else
-          color_opt = no_color ? "" : "NoColor"
           `phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
         end
 
