@@ -33,13 +33,22 @@ OptionParser.new do |opts|
   opts.on("-o", "--out FILE") do |o|
     options[:out] = o
   end
+
+  opts.on("-s", "--skip") do |s|
+    options[:skip] = s
+  end
 end.parse!
 
 if ARGV.any? { |arg| arg == "init" }
   Jasmine::Flatiron::Initializer.run
 else
-  Jasmine::Flatiron::PhantomChecker.check_installation
-  username = Jasmine::Flatiron::UsernameParser.get_username
+  if !options[:skip]
+    Jasmine::Flatiron::PhantomChecker.check_installation
+    username = Jasmine::Flatiron::UsernameParser.get_username
+  else
+    username = "jasmine-flatiron"
+  end
+  
   repo = Jasmine::Flatiron::RepoParser.get_repo
   Jasmine::Flatiron::Runner.run(username, repo, options)
 end
