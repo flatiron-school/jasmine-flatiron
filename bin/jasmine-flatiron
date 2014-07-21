@@ -9,6 +9,8 @@ require 'fileutils'
 require 'erb'
 require 'faraday'
 require 'yaml'
+require 'json'
+require 'crack'
 
 options = {}
 OptionParser.new do |opts|
@@ -33,15 +35,6 @@ else
   Jasmine::Flatiron::PhantomChecker.check_installation
   Jasmine::Flatiron::Runner.run(options)
 end
-
-# flag for turning off color
-# flag for not pushing results
-# flag for running in browser
-# init
-# open
-# Require javascript somehow
-# Make the TestRunner.html file
-# call that crazy command: phantomjs run-jasmine.js <TestRunner.html>
 
 # phantomjs runners/run-jasmine.js runners/SpecRunner.html
 # JSON.parse(Crack::XML.parse(File.read('TEST-Player.xml')).to_json)
