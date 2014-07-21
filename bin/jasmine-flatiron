@@ -8,6 +8,7 @@ require 'optparse'
 require 'fileutils'
 require 'erb'
 require 'pry'
+require 'faraday'
 
 options = {}
 OptionParser.new do |opts|
