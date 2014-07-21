@@ -11,6 +11,7 @@ require 'faraday'
 require 'yaml'
 require 'json'
 require 'crack'
+require 'netrc'
 
 options = {}
 OptionParser.new do |opts|
