@@ -13,6 +13,7 @@ require 'json'
 require 'crack'
 require 'netrc'
 require 'git'
+require 'awesome_print'
 
 options = {}
 OptionParser.new do |opts|

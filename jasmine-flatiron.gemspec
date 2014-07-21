@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "crack"
   spec.add_runtime_dependency "netrc"
   spec.add_runtime_dependency "git"
+  spec.add_runtime_dependency "awesome_print"
 end
