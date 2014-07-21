@@ -115,7 +115,7 @@ module Jasmine
 
         @app_js_path = "#{FileUtils.pwd}/app.js"
 
-        File.open("#{FileFinder.location_to_dir('runners')}/SpecRunnerTemplate#{color_opt}.html", 'w+') do |f|
+        File.open("#{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html", 'w+') do |f|
           f << template.result(binding)
         end
       end
