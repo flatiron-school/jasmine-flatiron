@@ -96,7 +96,7 @@ module Jasmine
         if browser
           `open #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
         else
-          `phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
+          system("phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.htmlsystem")
         end
 
         # unless local
