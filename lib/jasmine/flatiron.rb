@@ -74,6 +74,7 @@ module Jasmine
 
     class Runner
       attr_reader :no_color, :local, :browser, :conn, :color_opt
+      attr_accessor :json_results
 
       def self.run(options)
         new(options).run
@@ -84,6 +85,13 @@ module Jasmine
         @color_opt = !no_color ? "" : "NoColor"
         @local = !!options[:local]
         @browser = !!options[:browser]
+        @json_results = {
+          testsuites: [],
+          tests: 0,
+          errors: 0,
+          failures: 0,
+          time: 0.0
+        }
         @conn = Faraday.new(url: SERVICE_URL) do |faraday|
           faraday.request  :url_encoded
           faraday.adapter  Faraday.default_adapter
@@ -99,11 +107,25 @@ module Jasmine
           system("phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")
         end
 
+        make_json
+        puts json_results.inspect
         # unless local
         #   push_to_flatiron
         # end
 
         # clean_up
+      end
+
+      def make_json
+        Dir.entries(FileUtils.pwd).keep_if { |f| f.match(/TEST/) }.each do |f|
+          parsed = JSON.parse(Crack::XML.parse(File.read(f)).to_json)["testsuites"]["testsuite"]
+          json_results[:testsuites] << parsed["testcase"]
+          json_results[:testsuites].flatten!
+          json_results[:tests] += parsed["tests"].to_i
+          json_results[:errors] += parsed["errors"].to_i
+          json_results[:failures] += parsed["failures"].to_i
+          json_results[:time] += parsed["time"].to_f
+        end
       end
 
       def push_to_flatiron
