@@ -102,7 +102,7 @@ module Jasmine
         make_runner_html
 
         if browser
-          `open #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html`
+          system("open #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")
         else
           system("phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")
         end
