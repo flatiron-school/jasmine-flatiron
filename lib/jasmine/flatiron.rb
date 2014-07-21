@@ -48,8 +48,8 @@ module Jasmine
 
       def generate_app_js
         FileUtils.cp(
-          "#{FileFinder.location_to_dir('templates')}/app.js.example",
-          'app.js'
+          "#{FileFinder.location_to_dir('templates')}/requires.yml.example",
+          'requires.yml'
         )
       end
     end
@@ -113,9 +113,13 @@ module Jasmine
       def make_runner_html
         template = ERB.new(File.read("#{FileFinder.location_to_dir('templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
 
-        @app_js_path = "#{FileUtils.pwd}/app.js"
-        # path = Pathname.new("#{FileUtils.pwd}/app.js")
-        # @app_js_path = path.relative_path_from(Pathname.new("#{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")) 
+        yaml = YAML.load(File.read('requires.yml'))["javascripts"]
+        required_files = yaml["files"]
+        required_specs = yaml["specs"]
+
+        @javascripts = required_files.map {|f| "#{FileUtils.pwd}/#{f}"}.concat(
+          required_specs.map {|s| "#{FileUtils.pwd}/#{s}"}
+        )
 
         File.open("#{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html", 'w+') do |f|
           f << template.result(binding)
