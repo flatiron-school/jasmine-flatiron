@@ -176,7 +176,7 @@ module Jasmine
         conn.post do |req|
           req.url SERVICE_ENDPOINT
           req.headers['Content-Type'] = 'application/json'
-          req.body = json_results
+          req.body = json_results.to_json
         end
       end
 
