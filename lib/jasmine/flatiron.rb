@@ -129,7 +129,6 @@ module Jasmine
           time: 0.0
         }
         @conn = Faraday.new(url: SERVICE_URL) do |faraday|
-          faraday.request  :url_encoded
           faraday.adapter  Faraday.default_adapter
         end
       end
@@ -174,7 +173,11 @@ module Jasmine
       end
 
       def push_to_flatiron
-        conn.post(SERVICE_ENDPOINT, json_results)
+        conn.post do |req|
+          req.url SERVICE_ENDPOINT
+          req.headers['Content-Type'] = 'application/json'
+          req.body = json_results
+        end
       end
 
       def make_runner_html
