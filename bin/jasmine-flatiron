@@ -12,6 +12,7 @@ require 'yaml'
 require 'json'
 require 'crack'
 require 'netrc'
+require 'git'
 
 options = {}
 OptionParser.new do |opts|
