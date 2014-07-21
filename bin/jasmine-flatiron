@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-SERVICE_URL = 'http://requestb.in'
-SERVICE_ENDPOINT = '/14pe2gq1'
+SERVICE_URL = 'http://ironbroker.flatironschool.com'
+SERVICE_ENDPOINT = '/e/flatiron_jasmine/build'
 
 require 'jasmine/flatiron'
 require 'optparse'
@@ -48,7 +48,7 @@ else
   else
     username = "jasmine-flatiron"
   end
-  
+
   repo = Jasmine::Flatiron::RepoParser.get_repo
   Jasmine::Flatiron::Runner.run(username, repo, options)
 end
