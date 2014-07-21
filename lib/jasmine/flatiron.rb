@@ -169,7 +169,7 @@ module Jasmine
 
       def write_json_output
         File.open(out, 'w+') do |f|
-          f.write(json_results)
+          f.write(json_results.to_json)
         end
       end
 
