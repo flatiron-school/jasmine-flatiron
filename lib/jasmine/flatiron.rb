@@ -111,14 +111,14 @@ module Jasmine
       end
 
       def make_runner_html
-        binding.pry
-        template = Erb.new(File.read("#{FileFinder.location_to_dir('templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
+        template = ERB.new(File.read("#{FileFinder.location_to_dir('templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
 
         @app_js_path = "#{FileUtils.pwd}/app.js"
 
         File.open("#{FileFinder.location_to_dir('runners')}/SpecRunnerTemplate#{color_opt}.html", 'w+') do |f|
           f.write(template.result)
         end
+        binding.pry
       end
 
       def clean_up
