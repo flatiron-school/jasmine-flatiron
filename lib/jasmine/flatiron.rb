@@ -127,7 +127,7 @@ module Jasmine
       end
 
       def clean_up
-        FileUtils.rm("#{FileFinder.location_to_dir('runners')}/SpecRunnerTemplate#{color_opt}.html")
+        FileUtils.rm("#{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")
       end
     end
   end
