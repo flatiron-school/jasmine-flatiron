@@ -19,15 +19,14 @@ module Jasmine
 
     class RepoParser
       def self.get_repo
-        repo = Git.open(FileUtils.pwd)
-
         begin
-          url = repo.remote.url
+          repo = Git.open(FileUtils.pwd)
         rescue
           puts "Not a valid Git repository"
           die
         end
 
+        url = repo.remote.url
         repo_name = url.match(/(?:https:\/\/|git@).*\/(.+)\.git/)[1]
       end
 
