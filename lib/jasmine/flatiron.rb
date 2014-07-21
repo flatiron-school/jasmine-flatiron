@@ -81,7 +81,7 @@ module Jasmine
 
       def initialize(options)
         @no_color = !!options[:color]
-        @color_opt = no_color ? "" : "NoColor"
+        @color_opt = !no_color ? "" : "NoColor"
         @local = !!options[:local]
         @browser = !!options[:browser]
         @conn = Faraday.new(url: SERVICE_URL) do |faraday|

@@ -27,8 +27,6 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-binding.pry
-
 if ARGV.any? { |arg| arg == "init" }
   Jasmine::Flatiron::Initializer.run
 else
