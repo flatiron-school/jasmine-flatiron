@@ -29,10 +29,10 @@ end.parse!
 
 if ARGV.any? { |arg| arg == "init" }
   Jasmine::Flatiron::Initializer.run
+else
+  Jasmine::Flatiron::PhantomChecker.check_installation
+  Jasmine::Flatiron::Runner.run(options)
 end
-
-Jasmine::Flatiron::PhantomChecker.check_installation
-Jasmine::Flatiron::Runner.run(options)
 
 # flag for turning off color
 # flag for not pushing results
