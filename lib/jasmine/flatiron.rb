@@ -141,7 +141,6 @@ module Jasmine
         else
           system("phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")
           make_json
-          ap json_results
         end
 
         if !local && !browser
