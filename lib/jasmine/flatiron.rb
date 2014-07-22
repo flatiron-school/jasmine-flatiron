@@ -27,7 +27,7 @@ module Jasmine
         end
 
         url = repo.remote.url
-        repo_name = url.match(/(?:https:\/\/|git@).*\/(.+)\.git/)[1]
+        repo_name = url.match(/(?:https:\/\/|git@).*\/(.+)(?:\.git)?/)[1]
       end
 
       def self.die
