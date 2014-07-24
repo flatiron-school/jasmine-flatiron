@@ -149,7 +149,7 @@ module Jasmine
           push_to_flatiron
         end
 
-        clean_up
+        # clean_up
       end
 
       def make_json
