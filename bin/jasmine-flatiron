@@ -45,10 +45,12 @@ else
   if !options[:skip]
     Jasmine::Flatiron::PhantomChecker.check_installation
     username = Jasmine::Flatiron::UsernameParser.get_username
+    user_id = Jasmine::Flatiron::UserIdParser.get_user_id
   else
     username = "jasmine-flatiron"
+    user_id = "none"
   end
 
   repo = Jasmine::Flatiron::RepoParser.get_repo
-  Jasmine::Flatiron::Runner.run(username, repo, options)
+  Jasmine::Flatiron::Runner.run(username, user_id, repo, options)
 end
