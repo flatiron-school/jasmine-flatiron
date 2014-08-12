@@ -208,10 +208,16 @@ module Jasmine
             json_results[:failures] += parsed["failures"].to_i
             json_results[:build][:test_suite][0][:duration] += parsed["time"].to_f
           end
+          set_passing_test_count
         end
+
         if out
           write_json_output
         end
+      end
+
+      def set_passing_test_count
+        json_results[:passing_count] = json_results[:tests] - json_results[:failures] - json_results[:errors]
       end
 
       def write_json_output
