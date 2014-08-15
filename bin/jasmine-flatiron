@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 SERVICE_URL = 'http://ironbroker.flatironschool.com'
-SERVICE_ENDPOINT = '/e/flatiron_jasmine/build/ironboard'
+SERVICE_ENDPOINT = '/e/flatiron_jasmine/build'
 
 require 'jasmine/flatiron'
 require 'optparse'
