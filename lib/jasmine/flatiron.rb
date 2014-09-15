@@ -1,4 +1,9 @@
 require "jasmine/flatiron/version"
+require 'faraday'
+require 'crack'
+require 'netrc'
+require 'git'
+require 'oj'
 
 module Jasmine
   module Flatiron
