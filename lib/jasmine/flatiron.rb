@@ -4,6 +4,7 @@ require 'crack'
 require 'netrc'
 require 'git'
 require 'oj'
+require 'open-uri'
 
 module Jasmine
   module Flatiron
