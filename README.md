@@ -1,24 +1,18 @@
 # Jasmine::Flatiron
 
-TODO: Write a gem description
-
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'jasmine-flatiron'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install with:
 
     $ gem install jasmine-flatiron
 
 ## Usage
 
-TODO: Write usage instructions here
+To initialize required files in a lab, run:
+
+    $ jasmine-flatiron init
+    
+This will generate a `spec` directory and a `requires.yml` file. The only requirement is that files are listed, in dependency order, in `requires.yml`.
 
 ## Contributing
 

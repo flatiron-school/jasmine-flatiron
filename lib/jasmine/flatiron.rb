@@ -4,16 +4,57 @@ module Jasmine
   module Flatiron
     class UsernameParser
       def self.get_username
-        netrc = Netrc.read
-        username, token = netrc["flatiron-push"]
+        parser = NetrcInteractor.new
+        username = parser.username
+
         if !username
           print "Enter your github username: "
           username = gets.strip
-          netrc["flatiron-push"] = username, "none"
-          netrc.save
+          user_id = GitHubInteractor.get_user_id_for(username)
+          parser.write(username, user_id)
         end
 
         username
+      end
+    end
+
+    class UserIdParser
+      def self.get_user_id
+        parser = NetrcInteractor.new
+        user_id = parser.user_id
+      end
+    end
+
+    class GitHubInteractor
+      attr_reader :username, :user_id
+
+      def self.get_user_id_for(username)
+        new(username).get_user_id
+      end
+
+      def initialize(username)
+        @username = username
+      end
+
+      def get_user_id
+        @user_id ||= Oj.load(
+          open("https://api.github.com/users/#{username}").read,
+          symbol_keys: true
+        )[:id]
+      end
+    end
+
+    class NetrcInteractor
+      attr_reader :username, :user_id, :netrc
+
+      def initialize
+        @netrc = Netrc.read
+        @username, @user_id = netrc["flatiron-push"]
+      end
+
+      def write(username, user_id)
+        netrc["flatiron-push"] = username, user_id
+        netrc.save
       end
     end
 
@@ -27,7 +68,8 @@ module Jasmine
         end
 
         url = repo.remote.url
-        repo_name = url.match(/(?:https:\/\/|git@).*\/(.+)(?:\.git)?/)[1]
+
+        repo_name = url.match(/(?:https:\/\/|git@).*\/(.+)(?:\.git)/)[1]
       end
 
       def self.die
@@ -109,11 +151,11 @@ module Jasmine
       attr_reader :no_color, :local, :browser, :conn, :color_opt, :out
       attr_accessor :json_results
 
-      def self.run(username, repo, options)
-        new(username, repo, options).run
+      def self.run(username, user_id, repo_name, options)
+        new(username, user_id, repo_name, options).run
       end
 
-      def initialize(username, repo, options)
+      def initialize(username, user_id, repo_name, options)
         @no_color = !!options[:color]
         @color_opt = !no_color ? "" : "NoColor"
         @local = !!options[:local]
@@ -121,12 +163,18 @@ module Jasmine
         @out = options[:out]
         @json_results = {
           username: username,
-          repo: repo,
-          examples: [],
+          github_user_id:user_id,
+          repo_name: repo_name,
+          build: {
+            test_suite: [{
+              framework: 'jasmine',
+              formatted_output: [],
+              duration: 0.0
+            }]
+          },
           tests: 0,
           errors: 0,
-          failures: 0,
-          time: 0.0
+          failures: 0
         }
         @conn = Faraday.new(url: SERVICE_URL) do |faraday|
           faraday.adapter  Faraday.default_adapter
@@ -135,37 +183,41 @@ module Jasmine
 
       def run
         make_runner_html
+        run_jasmine
+        make_json
+        push_to_flatiron unless local || browser
+        clean_up
+      end
 
+      def run_jasmine
         if browser
           system("open #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")
         else
           system("phantomjs #{FileFinder.location_to_dir('runners')}/run-jasmine.js #{FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")
-          make_json
         end
-
-        if !local && !browser
-          json_results.delete(:username)
-          json_results.delete(:repo)
-          push_to_flatiron
-        end
-
-        clean_up
       end
 
       def make_json
-        test_xml_files.each do |f|
-          parsed = JSON.parse(Crack::XML.parse(File.read(f)).to_json)["testsuites"]["testsuite"]
-          json_results[:examples] << parsed["testcase"]
-          json_results[:examples].flatten!
-          json_results[:tests] += parsed["tests"].to_i
-          json_results[:errors] += parsed["errors"].to_i
-          json_results[:failures] += parsed["failures"].to_i
-          json_results[:time] += parsed["time"].to_f
+        if local || !browser
+          test_xml_files.each do |f|
+            parsed = JSON.parse(Crack::XML.parse(File.read(f)).to_json)["testsuites"]["testsuite"]
+            json_results[:build][:test_suite][0][:formatted_output] << parsed["testcase"]
+            json_results[:build][:test_suite][0][:formatted_output].flatten!
+            json_results[:tests] += parsed["tests"].to_i
+            json_results[:errors] += parsed["errors"].to_i
+            json_results[:failures] += parsed["failures"].to_i
+            json_results[:build][:test_suite][0][:duration] += parsed["time"].to_f
+          end
+          set_passing_test_count
         end
 
         if out
           write_json_output
         end
+      end
+
+      def set_passing_test_count
+        json_results[:passing_count] = json_results[:tests] - json_results[:failures] - json_results[:errors]
       end
 
       def write_json_output
